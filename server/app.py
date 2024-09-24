@@ -116,7 +116,6 @@ def listar_lembretes():
     return []
 
 ##########################################POST
-
 @app.route('/adicionar_usuario', methods=['POST'])
 def criar_usuario():
     nome = request.form.get('nome')
