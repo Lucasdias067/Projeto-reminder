@@ -52,7 +52,7 @@
         .then(response => response.json())
         .then(data => {
           const lembretesDiv = document.getElementById('lembretes');
-          lembretesDiv.innerHTML = '';  // Clear previous results
+          lembretesDiv.innerHTML = '';  
           if (data.length === 0) {
             lembretesDiv.innerHTML = '<p>Nenhum lembrete encontrado.</p>';
           } else {
@@ -68,7 +68,6 @@
 
             data.forEach(lembrete => {
               const row = document.createElement('tr');
-              // Alterar a ordem dos valores aqui para corresponder ao cabeçalho
               const values = [lembrete.id, lembrete.nome_usuario, lembrete.nome_medicamento, lembrete.horario];
               values.forEach(value => {
                 const td = document.createElement('td');
