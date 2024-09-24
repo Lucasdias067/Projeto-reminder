@@ -16,7 +16,6 @@ db_user = config.get('DB_USER')
 db_password = config.get('DB_PASSWORD')
 db_host = config.get('DB_HOST')
 
-# Configuração da conexão com o banco de dados
 def get_db_connection():
     try:
         conn = psycopg2.connect(
@@ -30,7 +29,6 @@ def get_db_connection():
         print(f"Error connecting to the database: {e}")
         return None
 
-# Funções para interagir com o banco de dados
 def adicionar_usuario(nome):
     conn = get_db_connection()
     if conn:
@@ -82,7 +80,6 @@ def listar_lembretes():
     if conn:
         try:
             cursor = conn.cursor()
-            # Realiza a junção das tabelas
             cursor.execute("""
                 SELECT 
                     lembrete.id, 
@@ -102,9 +99,9 @@ def listar_lembretes():
             for lembrete in lembretes:
                 lembretes_formatados.append({
                     'id': lembrete[0],
-                    'nome_usuario': lembrete[1],  # Nome do usuário
-                    'nome_medicamento': lembrete[2],  # Nome do medicamento
-                    'horario': lembrete[3].strftime('%H:%M:%S')  # Converte o horário para string
+                    'nome_usuario': lembrete[1], 
+                    'nome_medicamento': lembrete[2], 
+                    'horario': lembrete[3].strftime('%H:%M:%S')  
                 })
             
             return lembretes_formatados
@@ -147,11 +144,9 @@ def criar_lembrete():
         if conn:
             cursor = conn.cursor()
             try:
-                # Buscar ID do usuário
                 cursor.execute("SELECT id FROM usuario WHERE nome = %s", (usuario_nome,))
                 usuario = cursor.fetchone()
 
-                # Buscar ID do medicamento
                 cursor.execute("SELECT id FROM medicamento WHERE nome = %s", (medicamento_nome,))
                 medicamento = cursor.fetchone()
 
