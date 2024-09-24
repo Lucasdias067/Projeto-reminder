@@ -3,12 +3,14 @@ from psycopg2 import sql, Error
 from flask import Flask, request, jsonify
 from psycopg2 import OperationalError
 import json
+import os
 from flask_cors import CORS  
 
 app = Flask(__name__)
 CORS(app)
 
-with open('config.json') as config_file:
+config_path = os.path.join(os.path.dirname(__file__), 'config.json')
+with open(config_path) as config_file:
     config = json.load(config_file)
 
 db_name = config.get('DB_NAME')
