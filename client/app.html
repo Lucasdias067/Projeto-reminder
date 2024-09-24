@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="app.css" media="screen" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <title>Adicionar Usuário</title>
+</head>
+
+<body>
+  <div class="container">
+    <form action="http://127.0.0.1:5000/adicionar_usuario" method="POST">
+      <label for="nome">Nome:</label>
+      <input type="text" id="nome" name="nome" required>
+      <button type="submit">Adicionar Usuário</button>
+    </form>
+  </div>
+
+  <div class="container">
+    <form action="http://127.0.0.1:5000/adicionar_medicamento" method="POST">
+      <label for="medicamento">Medicamento:</label>
+      <input type="text" id="medicamento" name="medicamento" required>
+      <button type="submit">Adicionar Medicamento</button>
+    </form>
+  </div>
+
+  <div class="container lembrete">
+    <form action="http://127.0.0.1:5000/adicionar_lembrete" method="POST">
+      <label for="usuario">Nome do Usuário:</label>
+      <input type="text" id="usuario" name="usuario" required>
+
+      <label for="medicamento">Nome do Medicamento:</label>
+      <input type="text" id="medicamento" name="medicamento" required>
+
+      <label for="horario">Horário:</label>
+      <input type="time" id="horario" name="horario" required>
+
+      <button type="submit">Adicionar Lembrete</button>
+    </form>
+  </div>
+
+  <div class="container">
+    <button id="listar-lembretes">Listar Lembretes</button>
+    <div id="lembretes"></div>
+  </div>
+
+  <script>
+    document.getElementById('listar-lembretes').addEventListener('click', function () {
+      fetch('http://127.0.0.1:5000/listar_lembretes')
+        .then(response => response.json())
+        .then(data => {
+          const lembretesDiv = document.getElementById('lembretes');
+          lembretesDiv.innerHTML = '';  // Clear previous results
+          if (data.length === 0) {
+            lembretesDiv.innerHTML = '<p>Nenhum lembrete encontrado.</p>';
+          } else {
+            const table = document.createElement('table');
+            table.border = '1';
+            const headerRow = document.createElement('tr');
+            ['ID', 'Nome do Usuário', 'Nome do Medicamento', 'Horário'].forEach(text => {
+              const th = document.createElement('th');
+              th.textContent = text;
+              headerRow.appendChild(th);
+            });
+            table.appendChild(headerRow);
+
+            data.forEach(lembrete => {
+              const row = document.createElement('tr');
+              // Alterar a ordem dos valores aqui para corresponder ao cabeçalho
+              const values = [lembrete.id, lembrete.nome_usuario, lembrete.nome_medicamento, lembrete.horario];
+              values.forEach(value => {
+                const td = document.createElement('td');
+                td.textContent = value;
+                row.appendChild(td);
+              });
+              table.appendChild(row);
+            });
+            lembretesDiv.appendChild(table);
+          }
+        })
+        .catch(error => {
+          console.error('Erro ao listar lembretes:', error);
+        });
+    });
+  </script>
+</body>
+
+</html>
